@@ -18,6 +18,10 @@ header{
     padding: 1rem;
 }
 
+.min-height{
+    min-height: 27rem;
+}
+
 .titulo{
     text-align: center;
     color: white;

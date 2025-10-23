@@ -9,6 +9,13 @@
 let deck = [];  /*lista del numero de cartas que salgan al azar*/
 const tipos = ['C', 'D', 'H', 'S']; /*lista del tipo de carta que salga al azar*/
 const especiales = ['A', 'J', 'Q', 'K']; /*lista de las iniciales de las letras de las cartas especiales*/
+let puntosJugador = 0
+
+//variables de referencias al HTML
+const btnPedir = document.querySelector('#btnPedir');
+const mostrarPuntos = document.querySelectorAll('small');
+const divCartasJugador = document.querySelector('#jugador-cartas');
+
 
 //Funcion para crear el mazo
 const crearDeck = () => {
@@ -32,3 +39,55 @@ const crearDeck = () => {
 }
 
 crearDeck();
+
+//funcion para pedir una carta
+const pedirCarta = () => {
+    
+    if(deck.length == 0){
+        throw "No hay mas cartas en el mazo!!";
+    }
+    const carta = deck.pop();
+    return carta;     
+}
+
+//Funcion para determinar el valor de la carta 
+const valorCarta = (carta)=>{
+    const valor = carta.substring(0, carta.length - 1);
+    //let puntos = 0;
+    
+    //if(isNaN(valor) ){
+        /*puntos = (valor === 'A' ) ? 11 : 10;*//*o tambien puede ser representado de la siguiente manera para que quede mas corta y comoda*/
+        
+        
+    //} else{
+    //    console.log("Si es un numero!!")
+    //    puntos = valor * 1;
+   // }
+
+    return ( isNaN(valor) ) ? 
+                   valor === 'A' ? 11 : 10
+                   : valor * 1; 
+
+}
+
+//Eventos
+btnPedir.addEventListener('click', ()=>{
+    const carta = pedirCarta();
+    puntosJugador += valorCarta(carta);
+    mostrarPuntos[0].innerText = puntosJugador;
+
+    const imgCarta = document.createElement('img');
+    imgCarta.src = ´assets/cartas/${carta}.png´ //apostrofe invertido al que puse ERROR
+    imgCarta.classList.add('carta')
+
+    divCartasJugador.appendChild(imgCarta);
+
+   if(puntosJugador > 21){
+    btnPedir.disabled = true; // el .disableb aplica su funcion para desactivar el boton btnPedir para que no sigamos sacando cartas
+    console.warn("Lo siento mucho peeero... PERDISTE!!!");S
+   }else if(puntosJugador == 21){
+    btnPedir.disabled = true;
+    console.info("21!!!...GENIAL!!!");
+   }
+})
+
